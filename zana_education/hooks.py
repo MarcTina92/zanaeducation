@@ -242,3 +242,13 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+# after_login = ["zana_education.utils.login_redirect"]
+
+fixtures = [
+    {
+        "dt": "Role",
+        "filters": [
+            ["name", "in", ["Guardian"]]
+        ]
+    }
+]

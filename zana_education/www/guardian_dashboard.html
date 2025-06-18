@@ -1,0 +1,173 @@
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+<!-- FullCalendar v5.11.3 JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+{% extends "templates/web.html" %}
+<!-- FullCalendar v5.11.3 CSS -->
+{% block title %} {{ guardian.name }} Dashboard{% endblock %}
+{% block page_content %}
+<div class="guardian-dashboard flex" style="min-height: 80vh;">
+  <div class="sidebar bg-light border-right p-4" style="min-width: 220px;">
+    <h5 class="mb-4">Dashboard</h5>
+    <ul class="list-unstyled">
+    {% for student in students %}
+      <li>
+        <a href='#student-{{loop.index0}}' class="d-block py-1 section-link" data-target="student-{{ loop.index0 }}">👨‍🎓 {{ student.name }}</a>
+    </li>
+    {% endfor %}
+
+    </ul>
+  </div>
+
+  <div class="content flex-grow-1 p-4">
+    <h3>Welcome, {{ guardian.guardian_name }} </h3>
+    <p>Select an option from the sidebar to manage your child's information.</p>
+    <hr>
+    {% for student in students %}
+      <div class="student-info content-section" id="student-{{ loop.index0 }}" style="display: none;">
+        
+        <div class="row mb-4 align-items-center border rounded p-3 shadow-sm">
+          <!-- Left Column: Image -->
+          <div class="col-md-3 text-center">
+            <img src="{{ student.image }}" alt="{{ student.name }}" class="img-fluid rounded-circle" style="max-width: 120px;">
+          </div>
+    
+          <!-- Right Column: Details -->
+          <div class="col-md-9">
+            <h5 class="mb-1">{{ student.name }}</h5>
+            <p class="mb-0"><strong>Email:</strong> {{ student.email }}</p>
+            <p class="mb-0"><strong>Birth Date:</strong> {{ student.birth_date }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div id="calendar-{{ loop.index0 }}">
+          </div>
+        </div>
+
+        <!-- Row 1 -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Student Info</h5>
+                <p><strong>Email:</strong> {{ student.email }}</p>
+                <p><strong>Student ID:</strong> {{ student.name }}</p>
+                {% for program in student.programs %}
+                  <p><strong>Academic Year:</strong> {{ program.academic_year }} </p>
+                  <p><strong>Program:</strong> {{ program.program }}</p>
+                  <p><strong>Term:</strong> {{ program.academic_term }}</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">📘 Fees</h5>
+                  <p><strong>Total Due:</strong> {{ student.outstanding_amount  or "No due" }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Your Courses</h5>
+                {% for course in student.courses %}
+                <p>{{ course.course }}</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">💳 Payments</h5>
+                  {% for payment in student.payments %}
+                  <p>{{ payment.paid_amount }} on date  {{ payment.posting_date }} </p>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <!-- Row 3 -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">📝 Homework</h5>
+                {% for homework in student.homeworks %}
+                <p>{{ homework.name }}</p>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">📢 Announcements</h5>
+                  {% for announcement in student.announcements %}
+                  <p>{{ announcement.name }}</p>
+                  {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const links = document.querySelectorAll(".section-link");
+    const sections = document.querySelectorAll(".content-section");
+
+    links.forEach(link => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute("data-target");
+
+        sections.forEach(sec => sec.style.display = "none");
+
+        const target = document.getElementById(targetId);
+        debugger;
+        if (target) {
+          target.style.display = "block";
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+
+    // Show first section by default (optional)
+    if (sections.length) {
+      sections[0].style.display = "block";
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const calendarEl = document.getElementById('calendar-0');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'timeGridWeek',
+      allDaySlot: false,
+      slotMinTime: "01:00:00",
+      slotMaxTime: "23:00:00",
+      events: {{ students[1].courses_calendar | tojson }},
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      }
+    });
+    calendar.render();
+  });
+</script>
+{% endblock %}

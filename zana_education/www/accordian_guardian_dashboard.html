@@ -1,0 +1,149 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    .accordion {
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+
+    .active, .accordion:hover {
+      background-color: #2980b9;
+    }
+
+    .panel {
+      padding: 0 18px;
+      background-color: white;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+      border-radius: 0 0 5px 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 10px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 15px 0;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .link-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #2ecc71;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .link-btn:hover {
+      background: #27ae60;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Welcome, Parent!</h1>
+
+<!-- Student 1 -->
+<button class="accordion">👦 Student: John Doe</button>
+<div class="panel">
+  <div class="dashboard">
+    <div class="card">
+      <h3>Basic Info</h3>
+      <p>Grade: 6</p>
+      <p>Program: Science Stream</p>
+      <a href="/student-profile/john-doe" class="link-btn">View Profile</a>
+    </div>
+
+    <div class="card">
+      <h3>Attendance</h3>
+      <p>Present: 120 days</p>
+      <p>Absent: 5 days</p>
+      <a href="/student-attendance/john-doe" class="link-btn">View Attendance</a>
+    </div>
+
+    <div class="card">
+      <h3>Grades</h3>
+      <p>Last Term GPA: 8.7</p>
+      <a href="/student-grades/john-doe" class="link-btn">View Grades</a>
+    </div>
+  </div>
+</div>
+
+<!-- Student 2 -->
+<button class="accordion">👧 Student: Emma Doe</button>
+<div class="panel">
+  <div class="dashboard">
+    <div class="card">
+      <h3>Basic Info</h3>
+      <p>Grade: 4</p>
+      <p>Program: General Education</p>
+      <a href="/student-profile/emma-doe" class="link-btn">View Profile</a>
+    </div>
+
+    <div class="card">
+      <h3>Attendance</h3>
+      <p>Present: 115 days</p>
+      <p>Absent: 10 days</p>
+      <a href="/student-attendance/emma-doe" class="link-btn">View Attendance</a>
+    </div>
+
+    <div class="card">
+      <h3>Grades</h3>
+      <p>Last Term GPA: 9.1</p>
+      <a href="/student-grades/emma-doe" class="link-btn">View Grades</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const acc = document.getElementsByClassName("accordion");
+  for (let i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function () {
+      this.classList.toggle("active");
+      const panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      }
+    });
+  }
+</script>
+
+{% endblock %}

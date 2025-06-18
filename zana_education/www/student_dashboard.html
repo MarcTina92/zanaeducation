@@ -1,0 +1,94 @@
+{% extends "templates/web.html" %}
+{% block page_content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Welcome, Shiv</h2>
+  {% if no_student_record %}
+    <div class="alert alert-warning">
+      No student record found for your account. Please contact your school admin.
+    </div>
+  {% else %}
+  <div class="row">
+    <!-- Student Info -->
+    <div class="col-md-6">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Student Info</h5>
+          <p><strong>Email:</strong> {{ frappe.session.user }}</p>
+          <p><strong>Student ID:</strong> {{ student.name }}</p>
+          <p><strong>Academic Year:</strong> {{ program_info.academic_year or "N/A" }}</p>
+          <p><strong>Program:</strong> {{ program_info.program or "Not enrolled" }}</p>
+        </div>
+      </div>
+    </div>
+    <!-- Fee Status -->
+    <div class="col-md-6">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Fees</h5>
+          {% if fee_status %}
+            <p><strong>Total Due:</strong> {{ fee_status.total_due }}</p>
+            <p><strong>Last Payment:</strong> {{ fee_status.last_payment_date }}</p>
+          {% else %}
+            <p>No fees found.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Courses -->
+  <div class="card shadow-sm mt-4">
+    <div class="card-body">
+      <h5 class="card-title">Your Courses</h5>
+      {% if courses %}
+        <ul class="list-group">
+          {% for course in courses %}
+            <li class="list-group-item">
+              <strong>{{ course.course }}</strong>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No courses found.</p>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Today's Timetable -->
+  <div class="card shadow-sm mt-4">
+    <div class="card-body">
+      <h5 class="card-title">Today's Classes</h5>
+      {% if today_schedule %}
+        <ul class="list-group">
+          {% for session in today_schedule %}
+            <li class="list-group-item">
+              <strong>{{ session.course }}</strong><br>
+              {{ session.from_time }} – {{ session.to_time }}
+              {% if session.room %}<br>Room: {{ session.room }}{% endif %}
+              {% if session.instructor %}<br>Instructor: {{ session.instructor }}{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No classes scheduled for today.</p>
+      {% endif %}
+    </div>
+  </div>
+<!-- Homework -->
+<div class="card shadow-sm mt-4">
+  <div class="card-body">
+    <h5 class="card-title">Upcoming Homework</h5>
+    {% if homework %}
+      <ul class="list-group">
+        {% for hw in homework %}
+          <li class="list-group-item">
+              <strong>{{ hw.assessment_name }}</strong> ({{ hw.course }}) – Due: {{ hw.schedule_date }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No upcoming homework found.</p>
+    {% endif %}
+  </div>
+</div>
+  {% endif %}
+</div>
+{% endblock %}
