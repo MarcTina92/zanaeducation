@@ -252,3 +252,9 @@ fixtures = [
         ]
     }
 ]
+
+doc_events = {
+    "User": {
+        "on_login": "zana_education.utils.auth.redirect_based_on_role",
+    }
+}
