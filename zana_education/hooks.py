@@ -246,12 +246,19 @@ app_license = "mit"
 
 fixtures = [
     {
-        "dt": "Role",
+        "doctype": "Role",
         "filters": [
             ["name", "in", ["Guardian"]]
         ]
+    },
+    {
+        "doctype": "Custom DocPerm",
+        "filters": [
+            ["role", "=", "Guardian"]
+        ]
     }
 ]
+
 
 doc_events = {
     "User": {
