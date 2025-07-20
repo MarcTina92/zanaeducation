@@ -1,0 +1,25 @@
+{% extends "templates/web.html" %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar py-4">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link" href="/student-portal">🏠 Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/student-portal/profile">👤 Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="/student-portal/my-schedule">📅 Schedule</a></li>
+          <li class="nav-item"><a class="nav-link" href="/student-portal/homework">📝 Assignments</a></li>
+          <li class="nav-item"><a class="nav-link" href="/student-portal/grades">📊 Grades</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+      {% block page_content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}

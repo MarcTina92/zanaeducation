@@ -1,0 +1,7 @@
+[
+  {
+    "from_route": "/student-portal/my-schedule",
+    "to_route": "zana_student_portal/www/student-portal/my-schedule/index"
+  }
+]
+
